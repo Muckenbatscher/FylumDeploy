@@ -1,27 +1,22 @@
 ﻿using Octokit.Webhooks;
 using Octokit.Webhooks.Events;
-using Octokit.Webhooks.Events.PullRequest;
 
 namespace FylumWebhook;
 
-public class FylumWebhookEventProcessor(ILogger<FylumWebhookEventProcessor> logger) : WebhookEventProcessor
+public class FylumWebhookEventProcessor : WebhookEventProcessor
 {
-    protected override async ValueTask ProcessPullRequestWebhookAsync(
+    private readonly ILogger<FylumWebhookEventProcessor> _logger;
+
+    public FylumWebhookEventProcessor(ILogger<FylumWebhookEventProcessor> logger)
+    {
+        _logger = logger;
+    }
+
+    protected override async ValueTask ProcessPushWebhookAsync(
         WebhookHeaders headers,
-        PullRequestEvent pullRequestEvent,
-        PullRequestAction action,
+        PushEvent pushEvent,
         CancellationToken cancellationToken = default)
     {
-        switch (action)
-        {
-            case PullRequestActionValue.Opened:
-                logger.LogInformation("pull request opened");
-                await Task.Delay(1000, cancellationToken);
-                break;
-            default:
-                logger.LogInformation("Some other pull request event");
-                await Task.Delay(1000, cancellationToken);
-                break;
-        }
+        _logger.LogInformation("pushed to {0}", pushEvent.Ref);
     }
 }
