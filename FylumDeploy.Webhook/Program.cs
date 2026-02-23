@@ -17,7 +17,7 @@ public class Program
         app.UseRouting()
             .UseEndpoints(endpoints =>
             {
-                var secret = builder.Configuration["GitHubWebhookSecret"];
+                var secret = builder.Configuration["GITHUB_SECRET"]!;
                 endpoints.MapGitHubWebhooks(secret: secret);
             });
 

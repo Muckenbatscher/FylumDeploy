@@ -4,8 +4,10 @@ internal class Program
     {
         var builder = DistributedApplication.CreateBuilder(args);
 
+        var githubWebhookSecret = builder.AddParameter("GithubWebhookSecret", secret: true);
         builder.AddProject<Projects.FylumDeploy_Webhook>("webhook")
-            .WithExternalHttpEndpoints();
+            .WithExternalHttpEndpoints()
+            .WithEnvironment("GITHUB_SECRET", githubWebhookSecret);
 
         builder.Build().Run();
     }
