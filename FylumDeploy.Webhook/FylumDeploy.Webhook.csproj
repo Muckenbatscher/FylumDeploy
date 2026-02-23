@@ -13,4 +13,8 @@
     <PackageReference Include="Octokit.Webhooks.AspNetCore" Version="3.2.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FylumDeploy.ServiceDefaults\FylumDeploy.ServiceDefaults.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="Fylum.Webhook/Fylum.Webhook.csproj" />
+  <Project Path="FylumDeploy.Webhook/FylumDeploy.Webhook.csproj" />
+  <Project Path="FylumDeploy.AppHost/FylumDeploy.AppHost.csproj" />
+  <Project Path="FylumDeploy.ServiceDefaults/FylumDeploy.ServiceDefaults.csproj" />
 </Solution>

@@ -1,13 +1,14 @@
 using Octokit.Webhooks;
 using Octokit.Webhooks.AspNetCore;
 
-namespace Fylum.Webhook;
+namespace FylumDeploy.Webhook;
 
 public class Program
 {
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        var builder = WebApplication.CreateBuilder(args)
+            .AddServiceDefaults();
 
         builder.Services.AddSingleton<WebhookEventProcessor, FylumWebhookEventProcessor>();
 
