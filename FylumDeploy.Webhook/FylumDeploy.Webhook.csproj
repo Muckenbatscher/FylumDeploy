@@ -1,20 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <EnableSdkContainerDebugging>True</EnableSdkContainerDebugging>
-    <UserSecretsId>fc5dce59-e759-45d0-9404-5d23f89529a3</UserSecretsId>
-  </PropertyGroup>
+	<PropertyGroup>
+		<UserSecretsId>fc5dce59-e759-45d0-9404-5d23f89529a3</UserSecretsId>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
-    <PackageReference Include="Octokit.Webhooks.AspNetCore" Version="3.2.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Octokit.Webhooks.AspNetCore" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\FylumDeploy.ServiceDefaults\FylumDeploy.ServiceDefaults.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\FylumDeploy.ServiceDefaults\FylumDeploy.ServiceDefaults.csproj" />
+	</ItemGroup>
 
 </Project>

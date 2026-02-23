@@ -1,15 +1,17 @@
-<Project Sdk="Aspire.AppHost.Sdk/13.1.1">
+<Project Sdk="Aspire.AppHost.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <UserSecretsId>e3725f1f-b5ef-413a-b46a-711a8fbac1fd</UserSecretsId>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<UserSecretsId>e3725f1f-b5ef-413a-b46a-711a8fbac1fd</UserSecretsId>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\FylumDeploy.Webhook\FylumDeploy.Webhook.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Aspire.Hosting.AppHost" />
+		<PackageReference Include="Aspire.Hosting.Docker" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\FylumDeploy.Webhook\FylumDeploy.Webhook.csproj" />
+	</ItemGroup>
 
 </Project>
