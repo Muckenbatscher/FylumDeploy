@@ -1,7 +1,7 @@
 using Octokit.Webhooks;
 using Octokit.Webhooks.AspNetCore;
 
-namespace FylumWebhook;
+namespace Fylum.Webhook;
 
 public class Program
 {

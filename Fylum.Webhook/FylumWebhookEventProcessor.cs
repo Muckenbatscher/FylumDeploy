@@ -1,7 +1,7 @@
 ﻿using Octokit.Webhooks;
 using Octokit.Webhooks.Events;
 
-namespace FylumWebhook;
+namespace Fylum.Webhook;
 
 public class FylumWebhookEventProcessor : WebhookEventProcessor
 {

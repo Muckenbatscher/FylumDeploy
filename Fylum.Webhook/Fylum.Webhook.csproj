@@ -13,8 +13,4 @@
     <PackageReference Include="Octokit.Webhooks.AspNetCore" Version="3.2.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ContainerPort Include="8081" />
-  </ItemGroup>
-
 </Project>
