@@ -17,6 +17,12 @@ public class FylumWebhookEventProcessor : WebhookEventProcessor
         PushEvent pushEvent,
         CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("pushed to {0}", pushEvent.Ref);
+        LogPushedRef(pushEvent.Ref);
+    }
+
+    private void LogPushedRef(string pushedRef)
+    {
+        if (_logger.IsEnabled(LogLevel.Information))
+            _logger.LogInformation("Pushed to {Ref}", pushedRef);
     }
 }
