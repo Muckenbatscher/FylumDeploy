@@ -19,7 +19,7 @@ internal class DeploymentResultRabbitConsumerWorker : RabbitMqConsumerWorker
         _githubClient = githubClient;
     }
 
-    protected override string QueueName => Routes.DeploymentResults;
+    protected override string QueueName => Queues.DeploymentResults;
 
     protected override async Task<bool> ProcessMessageAsync(string message)
     {

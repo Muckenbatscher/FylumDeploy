@@ -1,7 +1,9 @@
-﻿namespace FylumDeploy.Webhook;
+﻿using FylumDeploy.MessagingModels;
+
+namespace FylumDeploy.Webhook;
 
 public interface IDeploymentRequestMessagePublisher
 {
-    Task PublishMessageAsync(string messageText, CancellationToken cancellationToken);
-    Task PublishMessageAsync(string messageText);
+    Task PublishMessageAsync(DeploymentRequest deploymentRequest, CancellationToken cancellationToken);
+    Task PublishMessageAsync(DeploymentRequest deploymentRequest);
 }

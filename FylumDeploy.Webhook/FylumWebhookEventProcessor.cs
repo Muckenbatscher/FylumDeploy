@@ -1,4 +1,5 @@
-﻿using Octokit.Webhooks;
+﻿using FylumDeploy.MessagingModels;
+using Octokit.Webhooks;
 using Octokit.Webhooks.Events;
 
 namespace FylumDeploy.Webhook;
@@ -21,15 +22,27 @@ public class FylumWebhookEventProcessor : WebhookEventProcessor
         PushEvent pushEvent,
         CancellationToken cancellationToken = default)
     {
-        LogPushedRef(pushEvent.Ref);
-        await _messagePublisher.PublishMessageAsync(pushEvent.Ref, cancellationToken);
+        var commit = pushEvent.After;
+        var branch = pushEvent.Ref;
+        LogPushedRef(commit, branch);
+
+        var repository = pushEvent.Repository;
+        if (repository is null)
+            return;
+
+        var deployRequest = new DeploymentRequest(
+            RepoOwner: repository.Owner.Login,
+            RepoName: repository.Name,
+            BranchName: branch,
+            CommitHash: commit);
+        await _messagePublisher.PublishMessageAsync(deployRequest, cancellationToken);
         LogMessagePublished();
     }
 
-    private void LogPushedRef(string pushedRef)
+    private void LogPushedRef(string commitHash, string branch)
     {
         if (_logger.IsEnabled(LogLevel.Information))
-            _logger.LogInformation("Pushed to {Ref}", pushedRef);
+            _logger.LogInformation("Pushed {commitHash} to branch {branch}", commitHash, branch);
     }
 
     private void LogMessagePublished()
