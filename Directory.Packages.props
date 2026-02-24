@@ -3,10 +3,15 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
+    <!--Containerization-->
+    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
     <!--Aspire Orchestration-->
     <PackageVersion Include="Aspire.Hosting.AppHost" Version="13.1.1" />
+    <PackageVersion Include="Aspire.Hosting.RabbitMQ" Version="13.1.1" />
+	<PackageVersion Include="Aspire.RabbitMQ.Client" Version="13.1.1" />
     <PackageVersion Include="Aspire.Hosting.Docker" Version="13.1.1-preview.1.26105.8" />
-    <!--Octokit Webhooks-->
+    <!--Octokit GitHub interaction-->
+    <PackageVersion Include="Octokit" Version="14.0.0" />
     <PackageVersion Include="Octokit.Webhooks.AspNetCore" Version="3.2.1" />
     <!--Hosting and Dependency Injection-->
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.3" />
