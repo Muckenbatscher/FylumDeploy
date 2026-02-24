@@ -7,14 +7,14 @@ internal static class GitHubClientExtensions
 {
     extension(IServiceCollection services)
     {
-        public IServiceCollection AddGitHubClient(string? accessToken = null)
+        public IServiceCollection AddGitHubClient(string accessToken)
         {
             return services
-                .AddConnection()
+                .AddConnection(accessToken)
                 .AddClient();
         }
 
-        private IServiceCollection AddConnection(string? accessToken = null)
+        private IServiceCollection AddConnection(string accessToken)
         {
             return services
                 .AddSingleton<IConnection>(_ =>

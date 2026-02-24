@@ -9,7 +9,7 @@ public class Program
 
         builder.AddRabbitMQClient("rabbit");
 
-        var token = builder.Configuration["GITHUB_PAT"];
+        var token = builder.Configuration["GITHUB_PAT"]!;
         builder.Services.AddGitHubClient(token);
 
         builder.Services.AddHostedService<DeploymentResultRabbitConsumerWorker>();
