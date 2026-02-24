@@ -17,44 +17,71 @@ internal abstract class RabbitMqConsumerWorker : BackgroundService
     }
 
     protected abstract string QueueName { get; }
-    protected abstract bool ProcessMessage(string message);
+    protected abstract Task<bool> ProcessMessageAsync(string message); // Jetzt asynchron!
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            var channel = await _rabbitConnection.CreateChannelAsync(cancellationToken: stoppingToken);
-
-            await channel.QueueDeclareAsync(queue: QueueName,
-                durable: true, exclusive: false, autoDelete: false,
-                cancellationToken: stoppingToken);
-
-            var consumer = new AsyncEventingBasicConsumer(channel);
-            consumer.ReceivedAsync += async (model, ea) =>
+            try
             {
-                var body = ea.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body);
-                _logger.LogInformation("Received: {0}", message);
+                _logger.LogInformation("Queue '{QueueName}' waiting for connection...", QueueName);
 
-                var result = ProcessMessage(message);
-                if (!result)
-                {
-                    _logger.LogError("Failed to process message: {0}", message);
-                    await channel.BasicNackAsync(ea.DeliveryTag, multiple: false, requeue: false, cancellationToken: stoppingToken);
-                }
-                else
-                {
-                    _logger.LogInformation("Successfully processed message: {0}", message);
-                    await channel.BasicAckAsync(ea.DeliveryTag, multiple: false, cancellationToken: stoppingToken);
-                }
-            };
-            await channel.BasicConsumeAsync(
-                queue: QueueName,
-                autoAck: false,
-                consumer: consumer,
-                cancellationToken: stoppingToken);
+                using var channel = await _rabbitConnection.CreateChannelAsync(cancellationToken: stoppingToken);
 
-            await Task.Delay(Timeout.Infinite, stoppingToken);
+                await channel.QueueDeclareAsync(
+                    queue: QueueName,
+                    durable: true,
+                    exclusive: false,
+                    autoDelete: false,
+                    cancellationToken: stoppingToken);
+
+                await channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 1,
+                    global: false, cancellationToken: stoppingToken);
+
+                var consumer = new AsyncEventingBasicConsumer(channel);
+
+                consumer.ReceivedAsync += async (model, ea) =>
+                {
+                    try
+                    {
+                        var body = ea.Body.ToArray();
+                        var message = Encoding.UTF8.GetString(body);
+
+                        _logger.LogInformation("Received: {0}", message);
+
+                        var success = await ProcessMessageAsync(message);
+
+                        if (success)
+                            await channel.BasicAckAsync(ea.DeliveryTag, multiple: false);
+                        else
+                            await channel.BasicNackAsync(ea.DeliveryTag, multiple: false, requeue: false);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Critical error while trying to process the message.");
+                        await channel.BasicNackAsync(ea.DeliveryTag, multiple: false, requeue: false);
+                    }
+                };
+
+                await channel.BasicConsumeAsync(
+                    queue: QueueName,
+                    autoAck: false,
+                    consumer: consumer,
+                    cancellationToken: stoppingToken);
+
+                _logger.LogInformation("Consumer for queue '{QueueName}' active.", QueueName);
+                await Task.Delay(Timeout.Infinite, stoppingToken);
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occured in the consumer-loop. Restarting in 5 seconds...");
+                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+            }
         }
     }
 }

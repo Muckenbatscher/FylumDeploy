@@ -14,7 +14,7 @@ internal class DeploymentWorker : RabbitMqConsumerWorker
 
     protected override string QueueName => "deployments";
 
-    protected override bool ProcessMessage(string message)
+    protected override async Task<bool> ProcessMessageAsync(string message)
     {
         _logger.LogInformation("Received in Worker: {0}", message);
         return true;

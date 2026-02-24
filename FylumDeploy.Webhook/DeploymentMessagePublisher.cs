@@ -29,7 +29,7 @@ public class DeploymentMessagePublisher : IDeploymentMessagePublisher
         var body = Encoding.UTF8.GetBytes(messageText);
 
         await channel.BasicPublishAsync(exchange: string.Empty,
-            routingKey: string.Empty, body: body,
+            routingKey: "deployments", body: body,
             cancellationToken: cancellationToken);
 
         _logger.LogInformation("Sent: {messageText}", messageText);
