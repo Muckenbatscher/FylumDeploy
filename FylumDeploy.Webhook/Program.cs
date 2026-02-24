@@ -13,6 +13,7 @@ public class Program
         builder.AddRabbitMQClient("rabbit");
 
         builder.Services.AddSingleton<WebhookEventProcessor, FylumWebhookEventProcessor>();
+        builder.Services.AddTransient<IDeploymentMessagePublisher, DeploymentMessagePublisher>();
 
         var app = builder.Build();
 

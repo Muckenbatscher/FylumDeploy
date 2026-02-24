@@ -3,7 +3,7 @@ using System.Text;
 
 namespace FylumDeploy.Webhook;
 
-public class DeploymentMessagePublisher
+public class DeploymentMessagePublisher : IDeploymentMessagePublisher
 {
     private readonly ILogger<DeploymentMessagePublisher> _logger;
     private readonly IConnection _rabbitConnection;
@@ -14,6 +14,9 @@ public class DeploymentMessagePublisher
         _logger = logger;
         _rabbitConnection = rabbitConnection;
     }
+
+    public async Task PublishMessageAsync(string messageText) =>
+        await PublishMessageAsync(messageText, CancellationToken.None);
 
     public async Task PublishMessageAsync(string messageText, CancellationToken cancellationToken)
     {
