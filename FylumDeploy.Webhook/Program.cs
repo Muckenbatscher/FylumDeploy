@@ -10,6 +10,8 @@ public class Program
         var builder = WebApplication.CreateBuilder(args)
             .AddServiceDefaults();
 
+        builder.AddRabbitMQClient("rabbit");
+
         builder.Services.AddSingleton<WebhookEventProcessor, FylumWebhookEventProcessor>();
 
         var app = builder.Build();
