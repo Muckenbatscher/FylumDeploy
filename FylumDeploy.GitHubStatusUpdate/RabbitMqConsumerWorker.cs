@@ -17,7 +17,7 @@ internal abstract class RabbitMqConsumerWorker : BackgroundService
     }
 
     protected abstract string QueueName { get; }
-    protected abstract Task<bool> ProcessMessageAsync(string message); // Jetzt asynchron!
+    protected abstract Task<bool> ProcessMessageAsync(string message);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {

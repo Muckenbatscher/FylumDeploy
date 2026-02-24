@@ -8,7 +8,8 @@ internal class Program
         var rabbitMq = builder.AddRabbitMQ("rabbit")
             .WithDataVolume("rabbitmq_data")
             .WithLifetime(ContainerLifetime.Persistent)
-            .WithManagementPlugin();
+            .WithManagementPlugin()
+            .WithExternalHttpEndpoints();
 
         var githubApi = builder.AddExternalService("github", new Uri("https://api.github.com/"));
 

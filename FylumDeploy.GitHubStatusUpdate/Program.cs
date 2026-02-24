@@ -12,7 +12,7 @@ public class Program
         var token = builder.Configuration["GITHUB_PAT"];
         builder.Services.AddGitHubClient(token);
 
-        builder.Services.AddHostedService<DeploymentWorker>();
+        builder.Services.AddHostedService<DeploymentResultRabbitConsumerWorker>();
 
         builder.Build().Run();
     }

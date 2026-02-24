@@ -6,11 +6,11 @@ namespace FylumDeploy.Webhook;
 public class FylumWebhookEventProcessor : WebhookEventProcessor
 {
     private readonly ILogger<FylumWebhookEventProcessor> _logger;
-    private readonly IDeploymentMessagePublisher _messagePublisher;
+    private readonly IDeploymentRequestMessagePublisher _messagePublisher;
 
     public FylumWebhookEventProcessor(
         ILogger<FylumWebhookEventProcessor> logger,
-        IDeploymentMessagePublisher messagePublisher)
+        IDeploymentRequestMessagePublisher messagePublisher)
     {
         _logger = logger;
         _messagePublisher = messagePublisher;

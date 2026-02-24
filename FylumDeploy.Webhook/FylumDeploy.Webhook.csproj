@@ -6,6 +6,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\FylumDeploy.MessagingModels\FylumDeploy.MessagingModels.csproj" />
 		<ProjectReference Include="..\FylumDeploy.ServiceDefaults\FylumDeploy.ServiceDefaults.csproj" />
 	</ItemGroup>
 

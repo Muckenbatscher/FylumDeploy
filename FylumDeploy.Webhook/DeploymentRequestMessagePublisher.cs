@@ -1,14 +1,15 @@
-﻿using RabbitMQ.Client;
+﻿using FylumDeploy.MessagingModels;
+using RabbitMQ.Client;
 using System.Text;
 
 namespace FylumDeploy.Webhook;
 
-public class DeploymentMessagePublisher : IDeploymentMessagePublisher
+public class DeploymentRequestMessagePublisher : IDeploymentRequestMessagePublisher
 {
-    private readonly ILogger<DeploymentMessagePublisher> _logger;
+    private readonly ILogger<DeploymentRequestMessagePublisher> _logger;
     private readonly IConnection _rabbitConnection;
 
-    public DeploymentMessagePublisher(ILogger<DeploymentMessagePublisher> logger,
+    public DeploymentRequestMessagePublisher(ILogger<DeploymentRequestMessagePublisher> logger,
         IConnection rabbitConnection)
     {
         _logger = logger;
@@ -22,14 +23,14 @@ public class DeploymentMessagePublisher : IDeploymentMessagePublisher
     {
         using var channel = await _rabbitConnection.CreateChannelAsync(cancellationToken: cancellationToken);
 
-        await channel.QueueDeclareAsync(queue: "deployments", durable: true,
+        await channel.QueueDeclareAsync(queue: Routes.DeploymentRequests, durable: true,
             exclusive: false, autoDelete: false,
             cancellationToken: cancellationToken);
 
         var body = Encoding.UTF8.GetBytes(messageText);
 
         await channel.BasicPublishAsync(exchange: string.Empty,
-            routingKey: "deployments", body: body,
+            routingKey: Routes.DeploymentRequests, body: body,
             cancellationToken: cancellationToken);
 
         _logger.LogInformation("Sent: {messageText}", messageText);

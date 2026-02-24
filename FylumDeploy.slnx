@@ -1,5 +1,4 @@
 <Solution>
-  <Project Path="FylumDeploy.Webhook/FylumDeploy.Webhook.csproj" />
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
@@ -9,5 +8,7 @@
   </Folder>
   <Project Path="FylumDeploy.AppHost/FylumDeploy.AppHost.csproj" />
   <Project Path="FylumDeploy.GitHubStatusUpdate/FylumDeploy.GitHubStatusUpdate.csproj" />
+  <Project Path="FylumDeploy.MessagingModels/FylumDeploy.MessagingModels.csproj" Id="d6117f35-d543-4c67-b89e-10500d962ed6" />
   <Project Path="FylumDeploy.ServiceDefaults/FylumDeploy.ServiceDefaults.csproj" />
+  <Project Path="FylumDeploy.Webhook/FylumDeploy.Webhook.csproj" />
 </Solution>
