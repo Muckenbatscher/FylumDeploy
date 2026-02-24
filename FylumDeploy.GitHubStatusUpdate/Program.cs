@@ -1,5 +1,3 @@
-using Octokit;
-
 namespace FylumDeploy.GitHubStatusUpdate;
 
 public class Program
@@ -11,8 +9,8 @@ public class Program
 
         builder.AddRabbitMQClient("rabbit");
 
-        var client = new GitHubClient(
-            productInformation: new ProductHeaderValue("deploy-status"), 
-            baseAddress: new Uri("https://github"));
+        var token = builder.Configuration["GITHUB_PAT"];
+        builder.Services.AddGitHubClient(token);
+
     }
 }
