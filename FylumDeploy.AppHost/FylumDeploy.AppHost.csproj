@@ -12,6 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\FylumDeploy.ComposeBuilder\FylumDeploy.ComposeBuilder.csproj" />
 	  <ProjectReference Include="..\FylumDeploy.GitHubStatusUpdate\FylumDeploy.GitHubStatusUpdate.csproj" />
 	  <ProjectReference Include="..\FylumDeploy.Webhook\FylumDeploy.Webhook.csproj" />
 	</ItemGroup>

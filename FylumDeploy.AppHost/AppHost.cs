@@ -28,6 +28,10 @@ internal class Program
             .WithReference(rabbitMq)
             .WithReference(githubApi);
 
+        builder.AddProject<Projects.FylumDeploy_ComposeBuilder>("compose-builder")
+            .WaitFor(rabbitMq)
+            .WithReference(rabbitMq);
+
         builder.Build().Run();
     }
 }
