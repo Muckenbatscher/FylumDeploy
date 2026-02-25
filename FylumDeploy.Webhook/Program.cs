@@ -14,6 +14,7 @@ public class Program
 
         builder.Services.AddSingleton<WebhookEventProcessor, FylumWebhookEventProcessor>();
         builder.Services.AddTransient<IDeploymentRequestMessagePublisher, DeploymentRequestMessagePublisher>();
+        builder.Services.AddTransient<IDeploymentRequestPendingMessagePublisher, DeploymentRequestPendingMessagePublisher>();
 
         var app = builder.Build();
 

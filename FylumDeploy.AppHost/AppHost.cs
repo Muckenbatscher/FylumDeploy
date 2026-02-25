@@ -28,7 +28,8 @@ internal class Program
             .WithReference(rabbitMq)
             .WithReference(githubApi);
 
-        builder.AddProject<Projects.FylumDeploy_ComposeBuilder>("compose-builder")
+        builder.AddDockerfile("compose-builder",
+            contextPath: "..", dockerfilePath: "FylumDeploy.ComposeBuilder/Dockerfile")
             .WaitFor(rabbitMq)
             .WithReference(rabbitMq);
 
