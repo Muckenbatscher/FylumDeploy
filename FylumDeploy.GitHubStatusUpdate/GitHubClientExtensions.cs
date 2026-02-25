@@ -17,9 +17,11 @@ internal static class GitHubClientExtensions
         private IServiceCollection AddConnection(string accessToken)
         {
             return services
-                .AddSingleton<IConnection>(_ =>
+                .AddSingleton<IConnection>(sp =>
                 {
-                    var httpClientAdapter = new HttpClientAdapter(() => new SocketsHttpHandler());
+                    var handlerFactory = sp.GetRequiredService<IHttpMessageHandlerFactory>();
+                    var httpClientAdapter = new HttpClientAdapter(() => handlerFactory.CreateHandler("GitHub"));
+
                     return new Connection(
                         new ProductHeaderValue("deploy-status"),
                         new Uri("https://github"),
