@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<ItemGroup>
-		<PackageReference Include="Aspire.RabbitMQ.Client" />
 		<PackageReference Include="Octokit.Webhooks.AspNetCore" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\FylumDeploy.MessagingModels\FylumDeploy.MessagingModels.csproj" />
+		<ProjectReference Include="..\FylumDeploy.RabbitMqShared\FylumDeploy.RabbitMqShared.csproj" />
 		<ProjectReference Include="..\FylumDeploy.ServiceDefaults\FylumDeploy.ServiceDefaults.csproj" />
 	</ItemGroup>
 

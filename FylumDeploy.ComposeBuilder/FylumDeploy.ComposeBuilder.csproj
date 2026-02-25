@@ -1,10 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <ItemGroup>
-    <PackageReference Include="Octokit" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FylumDeploy.RabbitMqShared\FylumDeploy.RabbitMqShared.csproj" />
     <ProjectReference Include="..\FylumDeploy.ServiceDefaults\FylumDeploy.ServiceDefaults.csproj" />
   </ItemGroup>

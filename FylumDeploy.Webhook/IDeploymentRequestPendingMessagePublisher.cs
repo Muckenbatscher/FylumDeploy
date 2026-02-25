@@ -3,6 +3,6 @@ using FylumDeploy.RabbitMqShared.MessagingModels;
 
 namespace FylumDeploy.Webhook;
 
-public interface IDeploymentRequestMessagePublisher : IRabbitMqPublisher<DeploymentRequest>
+public interface IDeploymentRequestPendingMessagePublisher : IRabbitMqPublisher<DeploymentRequest>
 {
 }

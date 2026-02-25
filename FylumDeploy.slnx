@@ -7,8 +7,9 @@
     <File Path="nuget.config" />
   </Folder>
   <Project Path="FylumDeploy.AppHost/FylumDeploy.AppHost.csproj" />
+  <Project Path="FylumDeploy.ComposeBuilder/FylumDeploy.ComposeBuilder.csproj" />
   <Project Path="FylumDeploy.GitHubStatusUpdate/FylumDeploy.GitHubStatusUpdate.csproj" />
-  <Project Path="FylumDeploy.MessagingModels/FylumDeploy.MessagingModels.csproj" Id="d6117f35-d543-4c67-b89e-10500d962ed6" />
+  <Project Path="FylumDeploy.RabbitMqShared/FylumDeploy.RabbitMqShared.csproj" Id="3e222aac-5c49-48cd-9b5a-bd194c455152" />
   <Project Path="FylumDeploy.ServiceDefaults/FylumDeploy.ServiceDefaults.csproj" />
   <Project Path="FylumDeploy.Webhook/FylumDeploy.Webhook.csproj" />
 </Solution>

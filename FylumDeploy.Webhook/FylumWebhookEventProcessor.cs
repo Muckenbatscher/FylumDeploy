@@ -1,4 +1,4 @@
-﻿using FylumDeploy.MessagingModels;
+﻿using FylumDeploy.RabbitMqShared.MessagingModels;
 using Octokit.Webhooks;
 using Octokit.Webhooks.Events;
 
@@ -7,14 +7,17 @@ namespace FylumDeploy.Webhook;
 public class FylumWebhookEventProcessor : WebhookEventProcessor
 {
     private readonly ILogger<FylumWebhookEventProcessor> _logger;
-    private readonly IDeploymentRequestMessagePublisher _messagePublisher;
+    private readonly IDeploymentRequestMessagePublisher _requestMessagePublisher;
+    private readonly IDeploymentRequestPendingMessagePublisher _requestPendingMessagePublisher;
 
     public FylumWebhookEventProcessor(
         ILogger<FylumWebhookEventProcessor> logger,
-        IDeploymentRequestMessagePublisher messagePublisher)
+        IDeploymentRequestMessagePublisher messagePublisher,
+        IDeploymentRequestPendingMessagePublisher requestPendingMessagePublisher)
     {
         _logger = logger;
-        _messagePublisher = messagePublisher;
+        _requestMessagePublisher = messagePublisher;
+        _requestPendingMessagePublisher = requestPendingMessagePublisher;
     }
 
     protected override async ValueTask ProcessPushWebhookAsync(
@@ -35,7 +38,8 @@ public class FylumWebhookEventProcessor : WebhookEventProcessor
             RepoName: repository.Name,
             BranchName: branch,
             CommitHash: commit);
-        await _messagePublisher.PublishMessageAsync(deployRequest, cancellationToken);
+        await _requestMessagePublisher.PublishMessageAsync(deployRequest, cancellationToken);
+        await _requestPendingMessagePublisher.PublishMessageAsync(deployRequest, cancellationToken);
         LogMessagePublished();
     }
 

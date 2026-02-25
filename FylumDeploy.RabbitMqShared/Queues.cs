@@ -1,4 +1,4 @@
-﻿namespace FylumDeploy.MessagingModels;
+﻿namespace FylumDeploy.RabbitMqShared;
 
 public class Queues
 {

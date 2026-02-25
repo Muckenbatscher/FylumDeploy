@@ -1,15 +1,19 @@
-﻿using RabbitMQ.Client;
+﻿using FylumDeploy.RabbitMqShared.MessagingModels;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
+using System.Text.Json;
 
-namespace FylumDeploy.GitHubStatusUpdate;
+namespace FylumDeploy.RabbitMqShared;
 
-internal abstract class RabbitMqConsumerWorker : BackgroundService
+public abstract class RabbitMqConsumerWorker<TMessage> : BackgroundService
 {
-    private readonly ILogger<RabbitMqConsumerWorker> _logger;
+    private readonly ILogger<RabbitMqConsumerWorker<TMessage>> _logger;
     private readonly IConnection _rabbitConnection;
 
-    public RabbitMqConsumerWorker(ILogger<RabbitMqConsumerWorker> logger,
+    public RabbitMqConsumerWorker(ILogger<RabbitMqConsumerWorker<TMessage>> logger,
         IConnection rabbitConnection)
     {
         _logger = logger;
@@ -17,7 +21,7 @@ internal abstract class RabbitMqConsumerWorker : BackgroundService
     }
 
     protected abstract string QueueName { get; }
-    protected abstract Task<bool> ProcessMessageAsync(string message);
+    protected abstract Task<bool> ProcessMessageAsync(TMessage message);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -45,12 +49,17 @@ internal abstract class RabbitMqConsumerWorker : BackgroundService
                 {
                     try
                     {
-                        var body = ea.Body.ToArray();
-                        var message = Encoding.UTF8.GetString(body);
+                        var bodyBytes = ea.Body.ToArray();
+                        var message = Encoding.UTF8.GetString(bodyBytes);
 
-                        _logger.LogInformation("Received: {0}", message);
+                        _logger.LogInformation("Received {bytes} Bytes: {message}", bodyBytes.Length, message);
 
-                        var success = await ProcessMessageAsync(message);
+                        var success = false;
+                        var deserializedMessage = JsonSerializer.Deserialize<TMessage>(message);
+                        if (deserializedMessage is null)
+                            _logger.LogError("Failed to deserialize message: {message}", message);
+                        else
+                            success = await ProcessMessageAsync(deserializedMessage);
 
                         if (success)
                             await channel.BasicAckAsync(ea.DeliveryTag, multiple: false);

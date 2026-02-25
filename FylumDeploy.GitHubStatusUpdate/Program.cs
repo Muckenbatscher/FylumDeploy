@@ -13,6 +13,7 @@ public class Program
         builder.Services.AddGitHubClient(token);
 
         builder.Services.AddHostedService<DeploymentResultRabbitConsumerWorker>();
+        builder.Services.AddHostedService<PendingDeploymentRequestRabbitConsumerWorker>();
 
         builder.Build().Run();
     }
