@@ -1,4 +1,5 @@
 ﻿using FylumDeploy.RabbitMqShared.MessagingModels;
+using FylumDeploy.Webhook.RabbitMq;
 using Octokit.Webhooks;
 using Octokit.Webhooks.Events;
 

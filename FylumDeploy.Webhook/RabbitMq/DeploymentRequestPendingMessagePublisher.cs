@@ -2,7 +2,7 @@
 using FylumDeploy.RabbitMqShared.MessagingModels;
 using RabbitMQ.Client;
 
-namespace FylumDeploy.Webhook;
+namespace FylumDeploy.Webhook.RabbitMq;
 
 public class DeploymentRequestPendingMessagePublisher : RabbitMqPublisher<DeploymentRequest>, IDeploymentRequestPendingMessagePublisher
 {

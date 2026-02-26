@@ -1,3 +1,4 @@
+using FylumDeploy.Webhook.RabbitMq;
 using Octokit.Webhooks;
 using Octokit.Webhooks.AspNetCore;
 

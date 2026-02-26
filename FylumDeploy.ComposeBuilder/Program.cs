@@ -9,6 +9,8 @@ public class Program
 
         builder.AddRabbitMQClient("rabbit");
 
+        builder.Services.AddTransient<IDeploymentResultMessagePublisher, DeploymentResultMessagePublisher>();
+
         builder.Services.AddHostedService<DeploymentRequestRabbitConsumerWorker>();
 
         builder.Build().Run();
