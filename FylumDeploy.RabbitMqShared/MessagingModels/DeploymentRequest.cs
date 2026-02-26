@@ -1,3 +1,9 @@
-﻿namespace FylumDeploy.RabbitMqShared.MessagingModels;
+﻿using System.Text.Json.Serialization;
 
-public record DeploymentRequest(string RepoOwner, string RepoName, string BranchName, string CommitHash);
+namespace FylumDeploy.RabbitMqShared.MessagingModels;
+
+public record DeploymentRequest(
+    [property: JsonPropertyName("repo_owner")] string RepoOwner,
+    [property: JsonPropertyName("repo_name")] string RepoName,
+    [property: JsonPropertyName("branch_name")] string BranchName,
+    [property: JsonPropertyName("commit_hash")] string CommitHash);
