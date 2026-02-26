@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "FylumDeploy.ComposeBuilder": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

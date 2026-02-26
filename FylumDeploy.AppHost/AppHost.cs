@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Hosting;
+
 internal class Program
 {
     private static void Main(string[] args)
@@ -28,9 +30,19 @@ internal class Program
             .WithReference(rabbitMq)
             .WithReference(githubApi);
 
-        builder.AddProject<Projects.FylumDeploy_ComposeBuilder>("compose-builder")
+        var containerHost = builder.AddParameter("podman-container-host",
+            value: "unix:///var/run/podman.sock", secret: false);
+        var composeBuilder = builder.AddDockerfile("compose-builder",
+            contextPath: "..", dockerfilePath: "FylumDeploy.ComposeBuilder/Dockerfile")
             .WaitFor(rabbitMq)
-            .WithReference(rabbitMq);
+            .WithReference(rabbitMq)
+            .WithEnvironment("CONTAINER_HOST", containerHost);
+        if (!builder.Environment.IsDevelopment() || !OperatingSystem.IsWindows())
+        {
+            composeBuilder
+                .WithBindMount("/run/user/1000/podman/podman.sock", "/var/run/podman.sock")
+                .WithBindMount("/opt/fylum", "/opt/fylum");
+        }
 
         builder.Build().Run();
     }
