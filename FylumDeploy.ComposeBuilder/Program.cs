@@ -1,3 +1,5 @@
+using FylumDeploy.ComposeBuilder.AspirePublish;
+using FylumDeploy.ComposeBuilder.ContainerPublish;
 using FylumDeploy.ComposeBuilder.ProcessExecution;
 using FylumDeploy.ComposeBuilder.RepoClone;
 
@@ -16,6 +18,8 @@ public class Program
 
         builder.Services.AddTransient<IProcessExecutionService, ProcessExecutionService>();
         builder.Services.AddTransient<IRepoCloneService, RepoCloneService>();
+        builder.Services.AddTransient<IContainerPublishService, ContainerPublishService>();
+        builder.Services.AddTransient<IAspirePublishService, AspirePublishService>();
 
         builder.Services.AddHostedService<DeploymentRequestRabbitConsumerWorker>();
 
