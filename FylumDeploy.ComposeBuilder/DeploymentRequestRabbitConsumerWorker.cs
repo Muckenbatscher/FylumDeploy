@@ -7,27 +7,29 @@ namespace FylumDeploy.ComposeBuilder;
 internal class DeploymentRequestRabbitConsumerWorker : RabbitMqConsumerWorker<DeploymentRequest>
 {
     private readonly ILogger<DeploymentRequestRabbitConsumerWorker> _logger;
+    private readonly IDeploymentService _deploymentService;
     private readonly IDeploymentResultMessagePublisher _resultPublisher;
 
     public DeploymentRequestRabbitConsumerWorker(
         ILogger<DeploymentRequestRabbitConsumerWorker> logger,
         IConnection rabbitConnection,
-        IDeploymentResultMessagePublisher resultPublisher)
+        IDeploymentResultMessagePublisher resultPublisher,
+        IDeploymentService deploymentService)
         : base(logger, rabbitConnection)
     {
         _logger = logger;
         _resultPublisher = resultPublisher;
+        _deploymentService = deploymentService;
     }
 
     protected override string QueueName => Queues.DeploymentRequests;
 
-    protected override async Task<bool> ProcessMessageAsync(DeploymentRequest message)
+    protected override async Task<bool> ProcessMessageAsync(DeploymentRequest message, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Deploying commit '{commit}'.", message.CommitHash);
 
-        // TODO: actual deployment
-        await Task.Delay(TimeSpan.FromSeconds(30));
-        var success = true;
+        var success = await _deploymentService.DeployAsync(message.CommitHash, cancellationToken);
+
         _logger.LogInformation("Deployment result: {resullt}", success ? "success" : "failure");
 
         var result = new DeploymentResult(

@@ -21,7 +21,7 @@ internal class DeploymentResultRabbitConsumerWorker : RabbitMqConsumerWorker<Dep
 
     protected override string QueueName => Queues.DeploymentResults;
 
-    protected override async Task<bool> ProcessMessageAsync(DeploymentResult deploymentResult)
+    protected override async Task<bool> ProcessMessageAsync(DeploymentResult deploymentResult, CancellationToken cancellationToken)
     {
         var commitStatus = new NewCommitStatus
         {

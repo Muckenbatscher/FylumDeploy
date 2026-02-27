@@ -21,7 +21,7 @@ internal class PendingDeploymentRequestRabbitConsumerWorker : RabbitMqConsumerWo
 
     protected override string QueueName => Queues.DeploymentRequestsPending;
 
-    protected override async Task<bool> ProcessMessageAsync(DeploymentRequest deploymentRequest)
+    protected override async Task<bool> ProcessMessageAsync(DeploymentRequest deploymentRequest, CancellationToken cancellationToken)
     {
         var commitStatus = new NewCommitStatus
         {

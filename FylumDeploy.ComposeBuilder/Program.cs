@@ -21,6 +21,9 @@ public class Program
         builder.Services.AddTransient<IContainerPublishService, ContainerPublishService>();
         builder.Services.AddTransient<IAspirePublishService, AspirePublishService>();
 
+        builder.Services.AddTransient<IBuildService, BuildService>();
+        builder.Services.AddTransient<IDeploymentService, DeploymentService>();
+
         builder.Services.AddHostedService<DeploymentRequestRabbitConsumerWorker>();
 
         builder.Build().Run();
