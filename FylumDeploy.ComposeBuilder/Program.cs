@@ -18,6 +18,7 @@ public class Program
 
         builder.Services.AddTransient<IProcessExecutionService, ProcessExecutionService>();
         builder.Services.AddTransient<IRepoCloneService, RepoCloneService>();
+        builder.Services.AddTransient<IRepoCloneCleanupService, RepoCloneCleanupService>();
         builder.Services.AddTransient<IContainerPublishService, ContainerPublishService>();
         builder.Services.AddTransient<IAspirePublishService, AspirePublishService>();
 

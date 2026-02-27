@@ -15,18 +15,9 @@ internal class RepoCloneService : IRepoCloneService
 
     public async Task<bool> CloneRepoAsync(string commitHash, CancellationToken cancellationToken)
     {
-        await CleanupCloneDirectoryAsync(Directories.BuildDirectory, cancellationToken);
-
         var command = $"git clone --depth 1 --revision {commitHash} {RepoCloneUrl} {Directories.BuildDirectory}";
         var processExecute = new ProcessExecute(command);
         var result = await _processExecutionService.ExecuteProcessAsync(processExecute, cancellationToken);
         return result.WasSuccessful;
-    }
-
-    private async Task CleanupCloneDirectoryAsync(string destinationPath, CancellationToken cancellationToken)
-    {
-        var command = $"rm -rf {destinationPath}";
-        var processExecute = new ProcessExecute(command);
-        await _processExecutionService.ExecuteProcessAsync(processExecute, cancellationToken);
     }
 }
