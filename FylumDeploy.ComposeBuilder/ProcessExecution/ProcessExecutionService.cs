@@ -86,7 +86,7 @@ internal class ProcessExecutionService(ILogger<ProcessExecutionService> logger)
         _logger.LogError("Process execution failed for command: '{Command}' in working directory: '{workingDirectory}'",
             command, processExecute.WorkingDirectory);
 
-        _logger.LogError("Process execution failed. Exit Code: {ExitCode}, Standard Error: {StandardError}",
-            result.ExitCode, result.StandardError);
+        _logger.LogError("Process execution failed. Exit Code: {ExitCode}, Standard Error: {StandardError}, Standard Output: {StandardOutput}",
+            result.ExitCode, result.StandardError, result.StandardOutput);
     }
 }
