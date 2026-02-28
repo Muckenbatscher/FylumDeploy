@@ -23,8 +23,8 @@ internal class ContainerPublishService : IContainerPublishService
         {
             PublishDotnetProjectContainerAsync("Fylum.Api", ImageNames.ApiImageName, cancellationToken),
             PublishDotnetProjectContainerAsync("Fylum.Web", ImageNames.WebImageName, cancellationToken),
-            PublishDotnetProjectContainerAsync("Fylum.Migrations.Api", ImageNames.ApiImageName, cancellationToken),
-            PublishDotnetProjectContainerAsync("Fylum.Migrations.Web", ImageNames.WebImageName, cancellationToken),
+            PublishDotnetProjectContainerAsync("Fylum.Migrations.Api", ImageNames.MigrationApiImageName, cancellationToken),
+            PublishDotnetProjectContainerAsync("Fylum.Migrations.Web", ImageNames.MigrationWebImageName, cancellationToken),
         };
         bool[] results = await Task.WhenAll(publishTasks);
         bool allSuccessful = results.All(r => r);
