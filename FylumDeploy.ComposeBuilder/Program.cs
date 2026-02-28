@@ -1,5 +1,6 @@
 using FylumDeploy.ComposeBuilder.AspirePublish;
 using FylumDeploy.ComposeBuilder.ContainerPublish;
+using FylumDeploy.ComposeBuilder.PodmanCompose;
 using FylumDeploy.ComposeBuilder.ProcessExecution;
 using FylumDeploy.ComposeBuilder.RepoClone;
 
@@ -21,6 +22,7 @@ public class Program
         builder.Services.AddTransient<IRepoCloneCleanupService, RepoCloneCleanupService>();
         builder.Services.AddTransient<IContainerPublishService, ContainerPublishService>();
         builder.Services.AddTransient<IAspirePublishService, AspirePublishService>();
+        builder.Services.AddTransient<IPodmanComposeService, PodmanComposeService>();
 
         builder.Services.AddTransient<IBuildService, BuildService>();
         builder.Services.AddTransient<IDeploymentService, DeploymentService>();
