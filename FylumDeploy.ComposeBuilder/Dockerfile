@@ -7,7 +7,9 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS base
 RUN apt-get update && \
     apt-get install -y git podman podman-compose && \
     rm -rf /var/lib/apt/lists/*
+
 RUN curl -sSL https://aspire.dev/install.sh | bash
+ENV PATH="$PATH:/root/.aspire/bin"
 
 WORKDIR /app
 
