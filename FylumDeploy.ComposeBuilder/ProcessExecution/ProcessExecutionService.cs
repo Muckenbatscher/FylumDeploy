@@ -3,8 +3,11 @@ using System.Text;
 
 namespace FylumDeploy.ComposeBuilder.ProcessExecution;
 
-internal class ProcessExecutionService : IProcessExecutionService
+internal class ProcessExecutionService(ILogger<ProcessExecutionService> logger)
+    : IProcessExecutionService
 {
+    private readonly ILogger<ProcessExecutionService> _logger = logger;
+
     public async Task<ProcessExecutionResult> ExecuteProcessAsync(ProcessExecute processExecute, CancellationToken cancellationToken)
     {
         var startInfo = new ProcessStartInfo
@@ -63,11 +66,27 @@ internal class ProcessExecutionService : IProcessExecutionService
 
             throw; // Re-throw to let the caller know it was canceled
         }
-
-        return new ProcessExecutionResult(
+        var result = new ProcessExecutionResult(
             process.ExitCode,
             outputBuilder.ToString().Trim(),
             errorBuilder.ToString().Trim()
         );
+
+        LogErrorResult(processExecute, result);
+
+        return result;
+    }
+
+    private void LogErrorResult(ProcessExecute processExecute, ProcessExecutionResult result)
+    {
+        if (result.WasSuccessful)
+            return;
+
+        var command = $"{processExecute.ExecutedFile} {processExecute.Arguments}".Trim();
+        _logger.LogError("Process execution failed for command: '{Command}' in working directory: '{workingDirectory}'",
+            command, processExecute.WorkingDirectory);
+
+        _logger.LogError("Process execution failed. Exit Code: {ExitCode}, Standard Error: {StandardError}",
+            result.ExitCode, result.StandardError);
     }
 }
