@@ -24,7 +24,7 @@ internal class AspirePublishService : IAspirePublishService
 
     private async Task<bool> GenerateAspireArtifacts(CancellationToken cancellationToken)
     {
-        var command = $"aspire publish -o {Directories.IntermediatePublishDirectory}";
+        var command = $"aspire publish -o {Directories.IntermediatePublishDirectory} --non-interactive";
         var processExecute = new ProcessExecute(command: command, workingDirectory: Directories.BuildDirectory);
         var result = await _processExecutionService.ExecuteProcessAsync(processExecute, cancellationToken);
         return result.WasSuccessful;
