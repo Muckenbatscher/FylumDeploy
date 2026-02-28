@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS base
 
 # required installations for podman-out-of-podman
 RUN apt-get update && \
-    apt-get install -y git podman && \
+    apt-get install -y git podman podman-compose && \
     rm -rf /var/lib/apt/lists/*
 RUN curl -sSL https://aspire.dev/install.sh | bash
 
