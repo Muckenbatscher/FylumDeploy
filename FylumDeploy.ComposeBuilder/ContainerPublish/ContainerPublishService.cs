@@ -32,9 +32,14 @@ internal class ContainerPublishService(
 
     private async Task<bool> BuildDotnetSolutionAsync(CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Building the solution...");
         var command = $"dotnet build -c {BuildConfiguration}";
         var processExecute = new ProcessExecute(command: command, workingDirectory: Directories.BuildDirectory);
         var result = await _processExecutionService.ExecuteProcessAsync(processExecute, cancellationToken);
+        if (result.WasSuccessful)
+            _logger.LogInformation("Finished building the solution.");
+        else
+            _logger.LogError("Failed to build the solution.");
         return result.WasSuccessful;
     }
     private async Task<bool> PublishDotnetProjectContainerAsync(string projectName, string imageName,
