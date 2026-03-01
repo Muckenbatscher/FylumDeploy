@@ -16,7 +16,7 @@ internal class RepoCloneCleanupService(
         var processExecute = new ProcessExecute(command);
         var result = await _processExecutionService.ExecuteProcessAsync(processExecute, cancellationToken);
         if (result.WasSuccessful)
-            _logger.LogInformation("Cleaned up BuildDirectory");
+            _logger.LogInformation("Cleaned up the build directory.");
         else
         {
             _logger.LogError("Failed cleaning up the build directory.");
