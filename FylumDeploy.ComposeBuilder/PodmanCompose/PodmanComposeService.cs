@@ -15,7 +15,6 @@ internal class PodmanComposeService(
         string workingDirectory = Directories.OutputDirectory;
         string composeFilePath = Path.Combine(workingDirectory, "podman-compose.yaml");
 
-        // 1. Prüfen, ob dies ein Update oder das erste Deployment ist
         if (!File.Exists(composeFilePath))
         {
             _logger.LogWarning("No previous deployment found. Skipping 'compose down'");

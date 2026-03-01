@@ -30,7 +30,7 @@ internal class DeploymentRequestRabbitConsumerWorker : RabbitMqConsumerWorker<De
 
         var success = await _deploymentService.DeployAsync(message.CommitHash, cancellationToken);
 
-        _logger.LogInformation("Deployment result: {resullt}", success ? "success" : "failure");
+        _logger.LogInformation("Deployment result: {result}", success ? "success" : "failure");
 
         var result = new DeploymentResult(
             RepoOwner: message.RepoOwner,
