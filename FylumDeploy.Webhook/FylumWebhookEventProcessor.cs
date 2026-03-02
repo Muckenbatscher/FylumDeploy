@@ -26,6 +26,9 @@ public class FylumWebhookEventProcessor : WebhookEventProcessor
         PushEvent pushEvent,
         CancellationToken cancellationToken = default)
     {
+        if (pushEvent.Deleted)
+            return;
+
         var commit = pushEvent.After;
         var branch = pushEvent.Ref;
         LogPushedRef(commit, branch);
