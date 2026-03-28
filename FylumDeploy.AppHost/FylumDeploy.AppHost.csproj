@@ -1,4 +1,4 @@
-<Project Sdk="Aspire.AppHost.Sdk">
+<Project Sdk="Aspire.AppHost.Sdk/13.2.0">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -6,7 +6,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Aspire.Hosting.AppHost" />
 		<PackageReference Include="Aspire.Hosting.Docker" />
 		<PackageReference Include="Aspire.Hosting.RabbitMQ" />
 	</ItemGroup>
