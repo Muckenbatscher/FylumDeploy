@@ -1,19 +1,16 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS base
 
 # required installations for podman-out-of-podman
 RUN apt-get update && \
-    apt-get install -y git podman podman-compose && \
+    apt-get install -y curl git podman podman-compose && \
     rm -rf /var/lib/apt/lists/*
 
 RUN curl -sSL https://aspire.dev/install.sh | bash
 ENV PATH="$PATH:/root/.aspire/bin"
+RUN aspire setup
 
 WORKDIR /app
 
-# This stage is used to build and publish the project
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS publish
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
@@ -31,5 +28,4 @@ RUN dotnet publish "./FylumDeploy.ComposeBuilder.csproj" -c $BUILD_CONFIGURATION
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-RUN mkdir -p /output
 ENTRYPOINT ["dotnet", "FylumDeploy.ComposeBuilder.dll"]
