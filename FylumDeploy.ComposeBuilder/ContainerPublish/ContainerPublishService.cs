@@ -25,8 +25,10 @@ internal class ContainerPublishService(
             PublishDotnetProjectContainerAsync("Fylum.Migrations.Api", ImageNames.MigrationApiImageName, cancellationToken),
             PublishDotnetProjectContainerAsync("Fylum.Migrations.Web", ImageNames.MigrationWebImageName, cancellationToken),
         };
-        bool[] results = await Task.WhenAll(publishTasks);
-        bool allSuccessful = results.All(r => r);
+        var results = await Task.WhenAll(publishTasks);
+        var allSuccessful = results.All(r => r);
+
+        await CleanUpDanglingContainerImagesAsync(cancellationToken);
         return allSuccessful;
     }
 
@@ -56,5 +58,13 @@ internal class ContainerPublishService(
             _logger.LogError("Failed to build '{project}' image.", projectName);
 
         return result.WasSuccessful;
+    }
+
+    private async Task CleanUpDanglingContainerImagesAsync(CancellationToken cancellationToken)
+    {
+        // remove dangling images without a label, new image replaced the old one with the "latest" tag
+        var command = $"podman image prune --force"; 
+        var processExecute = new ProcessExecute(command: command, workingDirectory: Directories.BuildDirectory);
+        await _processExecutionService.ExecuteProcessAsync(processExecute, cancellationToken);
     }
 }
