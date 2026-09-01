@@ -7,7 +7,6 @@ RUN apt-get update && \
 
 RUN curl -sSL https://aspire.dev/install.sh | bash
 ENV PATH="$PATH:/root/.aspire/bin"
-RUN aspire setup
 
 WORKDIR /app
 

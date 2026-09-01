@@ -12,13 +12,30 @@ internal class AspirePublishService(
 
     public async Task<bool> PublishAspireArtifactsAsync(CancellationToken cancellationToken)
     {
+        var upToDate = await EnsureAspireUpdated(cancellationToken);
+        if (!upToDate)
+            return false;
+
         var generated = await GenerateAspireArtifacts(cancellationToken);
         if (!generated)
             return false;
 
-        bool copied = await CopyArtifactsToOutput(cancellationToken);
+        var copied = await CopyArtifactsToOutput(cancellationToken);
+        return copied;
+    }
 
-        return true;
+    private async Task<bool> EnsureAspireUpdated(CancellationToken cancellationToken)
+    {
+        var updateSelfCommand = "aspire update --self --non-interactive --yes";
+        var updateSelfProcessExecute = new ProcessExecute(command: updateSelfCommand);
+        var updateSelfResult = await _processExecutionService.ExecuteProcessAsync(updateSelfProcessExecute, cancellationToken);
+        if (!updateSelfResult.WasSuccessful)
+            return false;
+
+        var setupBundleCommand = "aspire setup --non-interactive";
+        var setupBundleProcessExecute = new ProcessExecute(command:  setupBundleCommand);
+        var setupBundleResult = await _processExecutionService.ExecuteProcessAsync(setupBundleProcessExecute, cancellationToken);
+        return setupBundleResult.WasSuccessful;
     }
 
     private async Task<bool> GenerateAspireArtifacts(CancellationToken cancellationToken)
