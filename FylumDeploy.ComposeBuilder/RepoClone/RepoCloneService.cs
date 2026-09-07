@@ -1,15 +1,18 @@
 ﻿using FylumDeploy.ComposeBuilder.ProcessExecution;
+using Microsoft.Extensions.Options;
 
 namespace FylumDeploy.ComposeBuilder.RepoClone;
 
 internal class RepoCloneService(
-    IProcessExecutionService processExecutionService,
-    ILogger<RepoCloneService> logger)
+    ILogger<RepoCloneService> logger,
+    IOptions<RepoAuthOptions> authOptions,
+    IProcessExecutionService processExecutionService)
     : IRepoCloneService
 {
     private const string RepoCloneUrl = "https://github.com/Muckenbatscher/Fylum.git";
 
     private readonly ILogger<RepoCloneService> _logger = logger;
+    private readonly RepoAuthOptions _authOptions = authOptions.Value;
     private readonly IProcessExecutionService _processExecutionService = processExecutionService;
 
     public async Task<bool> CloneRepoAsync(string commitHash, CancellationToken cancellationToken)
@@ -24,19 +27,20 @@ internal class RepoCloneService(
         }
         _logger.LogInformation("Initialized git repository at {directory}", Directories.BuildDirectory);
 
-        var remoteAddCommand = $"git remote add origin {RepoCloneUrl}";
+        var authenticatedUrl = RepoCloneUrl.Replace("https://github.com", $"https://{_authOptions.GitHubPat}@github.com");
+        var remoteAddCommand = $"git remote add origin {authenticatedUrl} --fetch";
         var remoteAddProcess = new ProcessExecute(remoteAddCommand, Directories.BuildDirectory);
         var remoteAddResul = await _processExecutionService.ExecuteProcessAsync(remoteAddProcess, cancellationToken);
         if (!remoteAddResul.WasSuccessful)
         {
-            _logger.LogError("Failed to add remote origin {repoUrl} to git repository at {directory}",
+            _logger.LogError("Failed to add remote origin {repoUrl} with authentication to git repository at {directory}",
                 RepoCloneUrl, Directories.BuildDirectory);
             return false;
         }
-        _logger.LogInformation("Added remote origin {repoUrl} to git repository at {directory}",
+        _logger.LogInformation("Added remote origin {repoUrl} with authenticationto git repository at {directory}",
             RepoCloneUrl, Directories.BuildDirectory);
 
-        var fetchCommand = $"git fetch --depth 1 origin {commitHash}";
+        var fetchCommand = $"git fetch origin {commitHash}";
         var fetchProcess = new ProcessExecute(fetchCommand, Directories.BuildDirectory);
         var fetchReuslt = await _processExecutionService.ExecuteProcessAsync(fetchProcess, cancellationToken);
         if (!fetchReuslt.WasSuccessful)

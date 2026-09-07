@@ -36,7 +36,8 @@ internal class Program
             contextPath: "..", dockerfilePath: "FylumDeploy.ComposeBuilder/Dockerfile")
             .WaitFor(rabbitMq)
             .WithReference(rabbitMq)
-            .WithEnvironment("CONTAINER_HOST", containerHost);
+            .WithEnvironment("CONTAINER_HOST", containerHost)
+            .WithEnvironment("GITHUB_PAT", githubResponseAccessToken);
         if (!builder.Environment.IsDevelopment() || !OperatingSystem.IsWindows())
         {
             composeBuilder
