@@ -33,7 +33,7 @@ internal class AspirePublishService(
             return false;
 
         var setupBundleCommand = "aspire setup --non-interactive";
-        var setupBundleProcessExecute = new ProcessExecute(command:  setupBundleCommand);
+        var setupBundleProcessExecute = new ProcessExecute(command: setupBundleCommand);
         var setupBundleResult = await _processExecutionService.ExecuteProcessAsync(setupBundleProcessExecute, cancellationToken);
         return setupBundleResult.WasSuccessful;
     }

@@ -15,6 +15,9 @@ public class Program
 
         builder.AddRabbitMQClient("rabbit");
 
+        builder.Services.Configure<RepoAuthOptions>(
+            options => options.GitHubPat = builder.Configuration["GITHUB_PAT"]!);
+
         builder.Services.AddTransient<IDeploymentResultMessagePublisher, DeploymentResultMessagePublisher>();
 
         builder.Services.AddTransient<IProcessExecutionService, ProcessExecutionService>();

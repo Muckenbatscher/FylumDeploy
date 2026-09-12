@@ -63,7 +63,7 @@ internal class ContainerPublishService(
     private async Task CleanUpDanglingContainerImagesAsync(CancellationToken cancellationToken)
     {
         // remove dangling images without a label, new image replaced the old one with the "latest" tag
-        var command = $"podman image prune --force"; 
+        var command = $"podman image prune --force";
         var processExecute = new ProcessExecute(command: command, workingDirectory: Directories.BuildDirectory);
         await _processExecutionService.ExecuteProcessAsync(processExecute, cancellationToken);
     }
