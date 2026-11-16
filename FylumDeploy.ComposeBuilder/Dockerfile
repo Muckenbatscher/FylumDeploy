@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:11.0 AS base
 
 # required installations for podman-out-of-podman
 RUN apt-get update && \
@@ -10,7 +10,7 @@ ENV PATH="$PATH:/root/.aspire/bin"
 
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS publish
+FROM mcr.microsoft.com/dotnet/sdk:11.0 AS publish
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Directory.Packages.props", "."]
